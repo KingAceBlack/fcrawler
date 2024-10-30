@@ -33,6 +33,16 @@ let player = {
   m1: 1,
   m2: 1,
   m3: 1,
+  armorPage: 1,
+  weaponPage: 1,
+  itemPage: 1,
+  remainingWeight: 3,
+  selectedArmor: 0,
+  selectedWeapon: 0,
+  selectedItem1: 0,
+  selectedItem2: 0,
+  selectedItem3: 0,
+
  
 };
 
@@ -42,7 +52,7 @@ let enemy1 = {
   life: 100,
 };
 
-// Define the enemy object
+// Define the rng object
 let rng = {
   name: 'rng',
   life: 2,
@@ -66,7 +76,7 @@ interface DataItem {
 
 
  const validFrames: string[] = ['a1', 'a2', 'a3', 'i1', 'i2', 'i3', 'm1', 'm2', 'm3'];
-
+ const validInventoryFrames: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 // Array of image URLs with aspect ratio 1.22:1
 const images = [
@@ -81,19 +91,45 @@ const images = [
   { id: '9', url: '/images/noItem.jpg' },
   { id: '10', url: '/images/wrongInput.jpg' },
   { id: '11', url: '/images/action.jpg' },
+  { id: '12', url: '/armors/1.jpg' },
+  { id: '13', url: '/armors/2.jpg' },
+  { id: '14', url: '/armors/3.jpg' },
+  { id: '15', url: '/armors/4.jpg' },
+  { id: '16', url: '/armors/5.jpg' },
+  { id: '17', url: '/armors/6.jpg' },
+  { id: '18', url: '/armors/7.jpg' },
+  { id: '19', url: '/armors/8.jpg' },
+  { id: '20', url: '/armors/9.jpg' },
+  { id: '21', url: '/armors/bg.jpg' },
+  { id: '22', url: '/armors/overweight.jpg' },
+  { id: '23', url: '/armors/equipped.jpg' },
+  { id: '24', url: '/armors/wallet.jpg' },
 
 ];
 
 
+
+
+const armorItems = [
+  { id: '1', weight: 1 },
+  { id: '2', weight: 1 },
+  { id: '3', weight: 2 },
+  { id: '4', weight: 3 },
+  { id: '5', weight: 4 },
+  { id: '6', weight: 1 },
+  { id: '7', weight: 2 },
+  { id: '8', weight: 5 },
+  { id: '9', weight: 2 },
+
+];
 
 app.frame('/', (c) => {
     let image;
     let intents;
 
     image = '/main.jpg',
-    intents = [
-           
-            <Button action="/ambush">Explore Glaumbrung</Button>,
+    intents = [     
+      <Button action="/selectCharacter">Explore Glaumbrung</Button>,
     ];
   return c.res({
     
@@ -101,15 +137,301 @@ app.frame('/', (c) => {
     intents: intents
   })
 });
+
+
+app.frame('/selectCharacter', (c) => {
+    let image;
+    let intents;
+
+    image = '/characters/charSelect.jpg',
+
+    intents = [   
+      <Button action="/selectArmor">Ayla</Button>,
+    ];
+  return c.res({
+    
+    image: image,
+    intents: intents
+  })
+});
+
+
+
+
+
+app.frame('/selectArmor', (c) => {
+    let image;
+    let intents;
+    const { buttonValue, inputText, status, frameData, verified } = c;
+    //addData(farcasterid, playerscore);
+     const armorPlaceholder = `Select Armor.. Current Weight: ${player.remainingWeight ?? ''}`;  
+       
+        image = (
+          <div
+              style={{
+                  position: 'relative',  // Set the container to relative positioning
+                  height: '100vh',
+                  background: 'white',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+              }}
+          >
+              <img
+                  src= {images[20].url}
+                  alt="First Image"
+                  style={{
+                      width: '650px',
+                      height: '650px',
+                  }}
+              />
+
+
+            {player.armorPage === 1 && (
+                <img
+                    src= {images[11].url}
+                    alt="Second Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `24.5%`,
+                        left: `33%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+              {player.armorPage === 1 && (
+                  <img
+                    src= {images[12].url}
+                    alt="third Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `24.5%`,
+                        left: `50%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+              {player.armorPage === 1 && (
+                  <img
+                    src= {images[13].url}
+                    alt="fourth Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `24.5%`,
+                        left: `67%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+              {player.armorPage === 1 && (
+                  <img
+                    src= {images[14].url}
+                    alt="fifth Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `52.5%`,
+                        left: `33%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+              {player.armorPage === 1 && (
+                  <img
+                    src= {images[15].url}
+                    alt="sixth Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `52.5%`,
+                        left: `50%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+              {player.armorPage === 1 && (
+                  <img
+                    src= {images[16].url}
+                    alt="seventh Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `52.5%`,
+                        left: `67%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+              {player.armorPage === 1 && (
+                  <img
+                    src= {images[17].url}
+                    alt="eight Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `81%`,
+                        left: `33%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+              {player.armorPage === 1 && (
+                  <img
+                    src= {images[18].url}
+                    alt="ninth Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `81%`,
+                        left: `50%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+              {player.armorPage === 1 && (
+                  <img
+                    src= {images[19].url}
+                    alt="tenth Image"
+                    style={{
+                        position: 'absolute',
+                        width: '140px',
+                        height: '173px',
+                        top: `81%`,
+                        left: `67%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
+              )}
+
+          </div>
+      );
+        
+    // Define the intents array with TextInput and conditional Button
+    intents = [
+      <TextInput placeholder={armorPlaceholder} />,
+      <Button action="/walletNft">Check Wallet</Button>,
+      <Button action="/resolveArmorInput">Continue</Button>,
+
+    ];
+
+    return c.res({
+        image: image,
+        intents: intents
+    });
+}); 
+
+
+app.frame('/resolveArmorInput', async (c) => {
+    let image;
+    let intents;
+    const { buttonValue, inputText, status, frameData, verified } = c;
+    const { fid } = frameData || {};
+    
+    // Check if inputText exists, else set default error image
+    if (!inputText) {
+        image = images[9].url; // Set an error image or fallback
+        console.log('No input provided!');
+        
+        intents = [
+            <Button action="/selectArmor">Continue</Button>,
+        ];
+        
+        return c.res({
+            image: image,
+            intents: intents
+        });
+    }
+
+
+    // Check if the input is valid
+    if (validInventoryFrames.includes(inputText)) {
+        // Check if the player has the item
+
+        if (armorItems[inputText-1].weight > player.remainingWeight) {
+
+            // Item too heavy
+            image = images[21].url;
+            console.log(armorItems[inputText-1]);
+            intents = [
+              <Button action="/selectArmor">Continue</Button>,
+            ];
+
+        } else {
+
+            // Item is light enough
+            image = images[22].url;
+            intents = [
+              <Button action="/ambush">Continue</Button>,
+            ];
+        }
+
+    } else {
+
+        // If inputText is not in validInventoryFrames, set an error image or response
+        image = images[9].url;
+        console.log('Invalid input!');
+        intents = [
+          <Button action="/selectArmor">Continue</Button>,
+        ];
+    }
+
+
+
+    return c.res({
+        image: image,
+        intents: intents
+    });
+});
+
+
+app.frame('/walletNft', (c) => {
+    let image;
+    let intents;
+
+    image = '/images/wallet.jpg',
+
+    intents = [   
+      <Button action="/selectArmor">No Wallet</Button>,
+    ];
+  return c.res({
+    
+    image: image,
+    intents: intents
+  })
+});
+
+
+
+//////////////////////////////////////////////////////////////
+
 
 app.frame('/ambush', (c) => {
     let image;
     let intents;
 
     image = '/images/ambush.jpg',
+
     intents = [
-           
-            <Button action="/battle">Fight</Button>,
+    <Button action="/battle">Fight</Button>,
     ];
   return c.res({
     
@@ -117,8 +439,6 @@ app.frame('/ambush', (c) => {
     intents: intents
   })
 });
-
-
 
 
 app.frame('/battle', (c) => {
@@ -300,45 +620,49 @@ app.frame('/battle', (c) => {
     });
 });      
 
-
-
 app.frame('/resolveInput', async (c) => {
     let image;
     let intents;
     const { buttonValue, inputText, status, frameData, verified } = c;
     const { fid } = frameData || {};
-    //farcasterid = fid !== undefined ? String(fid) : farcasterid; // Use existing farcasterid if fid is undefined
     
+    // Check if inputText exists, else set default error image
+    if (!inputText) {
+        image = images[9].url; // Set an error image or fallback
+        console.log('No input provided!');
+        
+        intents = [
+            <Button action="/battle">Continue</Button>,
+        ];
+        
+        return c.res({
+            image: image,
+            intents: intents
+        });
+    }
 
     // Convert inputText to lowercase for comparison
     const lowerCaseInput = inputText.toLowerCase();
 
     // Check if the input is valid
-
     if (validFrames.includes(lowerCaseInput)) {
-
         // Check if the player has the item
-
         if (player[lowerCaseInput] > 0) {
+            // Item used
+            player[lowerCaseInput] -= 1;
 
-          // Item used
-          player[lowerCaseInput] -= 1; // Correctly decrease the count of the used item
-           
+            if (["i1", "i2", "i3"].includes(lowerCaseInput)) {
+                image = images[7].url;
+                player.life += 5;
+                console.log(player.life);
 
-          if (["i1", "i2", "i3"].includes(lowerCaseInput)) {
+            } else if (["a1", "a2", "a3"].includes(lowerCaseInput)) {
+                image = images[10].url;
+                enemy1.life -= 5;
 
-            image = images[7].url;
-            player.life += 5;
-            console.log(player.life);
-
-          } else if (["a1", "a2", "a3"].includes(lowerCaseInput)) {
-            image = images[10].url;
-            enemy1.life -= 5;
-
-          } else {
-            image = images[7].url;
-            // Handle other cases
-          }
+            } else {
+                image = images[7].url;
+            }
         } else {
             // No item available
             image = images[8].url;
@@ -358,6 +682,7 @@ app.frame('/resolveInput', async (c) => {
         intents: intents
     });
 });
+
 
 
 
