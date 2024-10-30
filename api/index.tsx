@@ -19,6 +19,7 @@ export const app = new Frog({
 })
 
 
+
 // Define the player object
 let player = {
   name: 'player',
