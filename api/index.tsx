@@ -165,7 +165,7 @@ app.frame('/homeBase', (c) => {
 app.frame('/selectCharacter', (c) => {
     let image;
     let intents;
-    const characterPlaceholder = `Choose your character (wisely)...`; 
+    const characterPlaceholder = `Choose your character (wisely)..`; 
 
     image = '/characters/charSelect.jpg',
 
