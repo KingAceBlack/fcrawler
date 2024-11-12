@@ -77,6 +77,9 @@ interface DataItem {
 
 
  const validFrames: string[] = ['a1', 'a2', 'a3', 'i1', 'i2', 'i3', 'm1', 'm2', 'm3'];
+ const validCharacterFrames: string[] = ['1', '2', '3', '4', '5', '6'];
+ const validSpellFrames: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+ const validItemFrames: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
  const validInventoryFrames: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 // Array of image URLs with aspect ratio 1.22:1
@@ -130,7 +133,26 @@ app.frame('/', (c) => {
 
     image = '/main.jpg',
     intents = [     
-      <Button action="/selectCharacter">Explore Glaumbrung</Button>,
+      <Button action="/homeBase">Home Base</Button>,
+      <Button action="/ambush">Go on Adventure</Button>,
+    ];
+  return c.res({
+    
+    image: image,
+    intents: intents
+  })
+});
+
+app.frame('/homeBase', (c) => {
+    let image;
+    let intents;
+
+    image = '/main.jpg',
+    intents = [     
+      <Button action="/selectCharacter">Adventurer</Button>,
+      <Button action="/selectEquipment">Equipment</Button>,
+      <Button action="/selectSpell">Spells</Button>,
+      <Button action="/selectItem">Items</Button>,
     ];
   return c.res({
     
@@ -143,11 +165,14 @@ app.frame('/', (c) => {
 app.frame('/selectCharacter', (c) => {
     let image;
     let intents;
+    const characterPlaceholder = `Choose your character (wisely)...`; 
 
     image = '/characters/charSelect.jpg',
 
-    intents = [   
-      <Button action="/selectArmor">Ayla</Button>,
+    intents = [
+      <TextInput placeholder={characterPlaceholder} />,
+      <Button action="/homeBase">Home</Button>,
+      <Button action="/resolveCharacterInput">Select</Button>,
     ];
   return c.res({
     
@@ -157,10 +182,210 @@ app.frame('/selectCharacter', (c) => {
 });
 
 
+app.frame('/resolveCharacterInput', async (c) => {
+  let image;
+  let intents;
+  const { buttonValue, inputText, status, frameData, verified } = c;
+  const { fid } = frameData || {};
+  
+  // Check if inputText exists, else set default error image
+  if (!inputText) {
+      image = images[9].url; // Set an error image or fallback
+      console.log('No input provided!');
+      
+      intents = [
+          <Button action="/selectArmor">Continue</Button>,
+      ];
+      
+      return c.res({
+          image: image,
+          intents: intents
+      });
+  }
+
+
+  // Check if the input is valid
+  if (validCharacterFrames.includes(inputText)) {
+
+      image = images[22].url; // Placeholder successful selection image
+        console.log(armorItems[inputText-1]);
+        intents = [
+          <Button action="/homeBase">Home</Button>,
+          <Button action="/ambush">Go on Adventure</Button>,
+        ];
+
+  } else {
+
+      // If inputText is not in validCharacterFrames, set an error image or response
+      image = images[9].url;
+      console.log('Invalid input!');
+      intents = [
+        <Button action="/selectCharacter">Continue</Button>,
+      ];
+  }
 
 
 
-app.frame('/selectArmor', (c) => {
+  return c.res({
+      image: image,
+      intents: intents
+  });
+});
+
+
+
+
+
+app.frame('/selectSpell', (c) => {
+  let image;
+  let intents;
+  const spellPlaceholder = `Choose a spell...`; 
+
+  image = '/images/shock.jpg',
+
+  intents = [
+    <TextInput placeholder={spellPlaceholder} />,
+    <Button action="/homeBase">Home</Button>,
+    <Button action="/resolveSpellInput">Select</Button>,
+  ];
+
+  return c.res({
+    
+    image: image,
+    intents: intents
+  })
+});
+
+
+app.frame('/resolveSpellInput', async (c) => {
+  let image;
+  let intents;
+  const { buttonValue, inputText, status, frameData, verified } = c;
+  const { fid } = frameData || {};
+
+  // Check if inputText exists, else set default error image
+  if (!inputText) {
+      image = images[9].url; // Set an error image or fallback
+      console.log('No input provided!');
+      
+      intents = [
+          <Button action="/selectSpell">Continue</Button>,
+      ];
+      
+      return c.res({
+          image: image,
+          intents: intents
+      });
+  }
+
+
+  // Check if the input is valid
+  if (validSpellFrames.includes(inputText)) {
+
+      image = images[22].url; // Placeholder successful selection image
+        console.log(armorItems[inputText-1]);
+        intents = [
+          <Button action="/homeBase">Home</Button>,
+          <Button action="/ambush">Go on Adventure</Button>,
+        ];
+
+  } else {
+
+      // If inputText is not in validInventoryFrames, set an error image or response
+      image = images[9].url;
+      console.log('Invalid input!');
+      intents = [
+        <Button action="/selectArmor">Continue</Button>,
+      ];
+  }
+
+
+
+  return c.res({
+      image: image,
+      intents: intents
+  });
+});
+
+
+
+
+
+app.frame('/selectItem', (c) => {
+  let image;
+  let intents;
+  const spellPlaceholder = `Choose an item...`; 
+
+  image = '/images/red.jpg',
+
+  intents = [
+    <TextInput placeholder={spellPlaceholder} />,
+    <Button action="/homeBase">Home</Button>,
+    <Button action="/resolveItemInput">Select</Button>,
+  ];
+
+  return c.res({
+    
+    image: image,
+    intents: intents
+  })
+});
+
+
+app.frame('/resolveItemInput', async (c) => {
+  let image;
+  let intents;
+  const { buttonValue, inputText, status, frameData, verified } = c;
+  const { fid } = frameData || {};
+
+  // Check if inputText exists, else set default error image
+  if (!inputText) {
+      image = images[9].url; // Set an error image or fallback
+      console.log('No input provided!');
+      
+      intents = [
+          <Button action="/selectSpell">Continue</Button>,
+      ];
+      
+      return c.res({
+          image: image,
+          intents: intents
+      });
+  }
+
+
+  // Check if the input is valid
+  if (validItemFrames.includes(inputText)) {
+
+      image = images[22].url; // Placeholder successful selection image
+        console.log(armorItems[inputText-1]);
+        intents = [
+          <Button action="/homeBase">Home</Button>,
+          <Button action="/ambush">Go on Adventure</Button>,
+        ];
+
+  } else {
+
+      // If inputText is not in validInventoryFrames, set an error image or response
+      image = images[9].url;
+      console.log('Invalid input!');
+      intents = [
+        <Button action="/selectItem">Continue</Button>,
+      ];
+  }
+
+
+
+  return c.res({
+      image: image,
+      intents: intents
+  });
+});
+
+
+
+
+app.frame('/selectEquipment', (c) => {
     let image;
     let intents;
     const { buttonValue, inputText, status, frameData, verified } = c;
@@ -329,8 +554,9 @@ app.frame('/selectArmor', (c) => {
     // Define the intents array with TextInput and conditional Button
     intents = [
       <TextInput placeholder={armorPlaceholder} />,
+      <Button action="/homeBase">Home</Button>,
       <Button action="/walletNft">Check Wallet</Button>,
-      <Button action="/resolveArmorInput">Continue</Button>,
+      <Button action="/resolveEquipmentInput">Select</Button>,
 
     ];
 
@@ -341,7 +567,7 @@ app.frame('/selectArmor', (c) => {
 }); 
 
 
-app.frame('/resolveArmorInput', async (c) => {
+app.frame('/resolveEquipmentInput', async (c) => {
     let image;
     let intents;
     const { buttonValue, inputText, status, frameData, verified } = c;
@@ -381,7 +607,8 @@ app.frame('/resolveArmorInput', async (c) => {
             // Item is light enough
             image = images[22].url;
             intents = [
-              <Button action="/ambush">Continue</Button>,
+              <Button action="/homeBase">Home</Button>,
+              <Button action="/ambush">Go on Adventure</Button>,
             ];
         }
 
